@@ -17,7 +17,7 @@ A WooCommerce payment gateway plugin that enables stablecoin payments through th
 
 ## Installation
 
-1.  **Download the Plugin:** Download the latest version of the plugin from the [WordPress Plugin Directory](https://wordpress.org/plugins/paylis-payment-gateway/) or from the [GitHub repository](https://github.com/your-repo/paylis-payment-gateway).
+1.  **Download the Plugin:** Download the latest version of the plugin from the [WordPress Plugin Directory](https://wordpress.org/plugins/paylis-payment-gateway/) or from the [GitHub repository](https://github.com/fahmixls/paylis-woocomerce-payment-gateway).
 2.  **Upload to WordPress:**
     - Go to your WordPress admin dashboard.
     - Navigate to **Plugins > Add New**.
@@ -77,7 +77,7 @@ The API is expected to return a JSON response with the payment URL:
 
 ### Callback Handling
 
-The plugin handles callbacks from Paylis to update the order status. The callback URL is `https://your-domain.com/wc-api/paylis_callback`. The callback request should be a POST request with a JSON payload containing the order ID and the payment status.
+The plugin handles callbacks from Paylis to update the order status. The callback URL is `https://YOUR_WORDPRESS_URL/wc-api/paylis_callback`. The callback request should be a POST request with a JSON payload containing the order ID and the payment status.
 
 ### Customization
 
@@ -100,4 +100,3 @@ If you need help with the plugin, please open an issue on the [GitHub repository
 ## License
 
 This plugin is licensed under the GPL v3 or later. See the [LICENSE](https://www.gnu.org/licenses/gpl-3.0.html) file for more details.
-
