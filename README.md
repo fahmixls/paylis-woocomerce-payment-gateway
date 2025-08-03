@@ -1,128 +1,103 @@
 # Paylis WooCommerce Payment Gateway
 
-A WooCommerce payment gateway plugin that enables stablecoin payments through the Paylis payment system.
+[![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/paylis-payment-gateway.svg)](https://wordpress.org/plugins/paylis-payment-gateway/)
+[![License: GPL v3 or later](https://img.shields.io/badge/License-GPL%20v3%20or%20later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
+
+A WooCommerce payment gateway plugin that enables stablecoin payments through the Paylis payment system. This plugin provides a seamless and secure way for your customers to pay with stablecoins, and for you to receive payments directly to your wallet.
 
 ## Features
 
-- Accept stablecoin payments through Paylis
-- Compatible with WooCommerce block-based checkout
-- Simple setup with wallet address and API key
-- Secure payment processing with callback handling
-- Opens payment in new tab for better user experience
+- **Accept Stablecoin Payments:** Allow customers to pay with IDRX and other stablecoins supported by Paylis.
+- **Seamless Integration:** Integrates directly with your WooCommerce checkout process.
+- **Block-Based Checkout Support:** Fully compatible with the new WooCommerce block-based checkout experience.
+- **Easy Configuration:** Simple setup with your merchant wallet address and API key.
+- **Secure Payment Processing:** Uses a secure API to create and process payments, with callback handling to update order status automatically.
+- **User-Friendly Experience:** Opens the payment page in a new tab for a smooth and uninterrupted checkout flow.
+- **Developer Friendly:** Provides a clean and well-documented codebase for easy customization and extension.
 
 ## Installation
 
-1. Create a folder named `paylis-payment-gateway` in your WordPress plugins directory (`/wp-content/plugins/`)
-2. Upload all the plugin files to this folder:
+1.  **Download the Plugin:** Download the latest version of the plugin from the [WordPress Plugin Directory](https://wordpress.org/plugins/paylis-payment-gateway/) or from the [GitHub repository](https://github.com/your-repo/paylis-payment-gateway).
+2.  **Upload to WordPress:**
+    - Go to your WordPress admin dashboard.
+    - Navigate to **Plugins > Add New**.
+    - Click on the **Upload Plugin** button.
+    - Choose the downloaded ZIP file and click **Install Now**.
+3.  **Activate the Plugin:** Once the installation is complete, click on the **Activate Plugin** button.
 
-   - `paylis-payment-gateway.php` (main plugin file)
-   - `class-paylis-gateway.php`
-   - `class-paylis-blocks-support.php`
-   - `paylis-blocks.js`
-   - `paylis-styles.css`
+## Configuration
 
-3. Activate the plugin from WordPress admin panel (Plugins > Installed Plugins)
-
-## Setup
-
-1. Go to **WooCommerce > Settings > Payments**
-2. Find **Paylis Payment Gateway** and click **Manage**
-3. Configure the following settings:
-
-   - **Enable/Disable**: Check to enable the payment gateway
-   - **Title**: The payment method title shown to customers (default: "Pay with IDRX Stablecoin (Paylis)")
-   - **Description**: Description shown during checkout
-   - **Merchant Wallet Address**: Your wallet address for receiving payments
-   - **API Key**: Your Paylis API key
-
-4. Save the settings
-
-## File Structure
-
-```
-paylis-payment-gateway/
-├── paylis-payment-gateway.php          # Main plugin file
-├── class-paylis-gateway.php            # Payment gateway class
-├── class-paylis-blocks-support.php     # Block editor support
-├── paylis-blocks.js                    # JavaScript for blocks
-├── paylis-styles.css                   # Styling
-└── README.md                           # This file
-```
+1.  **Go to WooCommerce Settings:**
+    - In your WordPress admin dashboard, navigate to **WooCommerce > Settings**.
+    - Click on the **Payments** tab.
+2.  **Enable and Configure Paylis:**
+    - Find **Paylis Payment Gateway** in the list of payment methods and click on the **Manage** button.
+    - **Enable/Disable:** Check the box to enable the Paylis payment gateway.
+    - **Title:** Enter the title that will be displayed to your customers during checkout (e.g., "Pay with Stablecoin (Paylis)").
+    - **Description:** Enter a description for the payment method.
+    - **Merchant Wallet Address:** Enter your wallet address where you want to receive payments.
+    - **API Key:** Enter your Paylis API key. You can get your API key from your Paylis merchant dashboard.
+3.  **Save Changes:** Click on the **Save changes** button to save your configuration.
 
 ## How It Works
 
-1. Customer selects Paylis payment method during checkout
-2. Plugin sends payment request to Paylis API with order details
-3. Paylis API returns a payment URL
-4. Customer is redirected to payment URL in new tab
-5. After payment completion, Paylis sends callback to update order status
-6. Order status is updated automatically based on payment result
+1.  **Customer Selects Paylis:** During checkout, the customer selects the Paylis payment method.
+2.  **Redirect to Paylis:** The customer is redirected to the secure Paylis payment page in a new tab.
+3.  **Complete Payment:** The customer completes the payment using their preferred stablecoin.
+4.  **Callback and Order Update:** Once the payment is complete, Paylis sends a callback to your store to update the order status.
+5.  **Order Confirmation:** The customer is redirected back to your store's order confirmation page.
 
-## API Integration
+## For Developers
 
-The plugin expects the Paylis API to:
+### API Integration
 
-**Request Format:**
+The plugin communicates with the Paylis API to create and process payments. The API endpoint is defined in the `config.php` file.
+
+**API Request:**
+
+When a customer places an order, the plugin sends a POST request to the Paylis API with the following data:
 
 ```json
 {
   "amount": "100.00",
-  "currency": "USD",
-  "order_id": "123",
-  "wallet_address": "your_wallet_address",
-  "callback_url": "https://yoursite.com/wc-api/paylis_callback",
-  "return_url": "https://yoursite.com/checkout/order-received/123/",
-  "customer_email": "customer@example.com",
-  "description": "Order #123 - Your Site Name"
+  "order_id": 123,
+  "address": "your-wallet-address"
 }
 ```
 
-**Expected Response:**
+**API Response:**
+
+The API is expected to return a JSON response with the payment URL:
 
 ```json
 {
-  "payment_url": "https://paylis.com/pay/abc123",
-  "payment_id": "payment_abc123"
+  "payment_url": "https://paylis.com/pay/some-payment-id"
 }
 ```
 
-**Callback Format:**
-The plugin expects callbacks at `/wc-api/paylis_callback` with:
+### Callback Handling
 
-```json
-{
-  "order_id": "123",
-  "payment_id": "payment_abc123",
-  "status": "completed",
-  "transaction_id": "tx_abc123"
-}
-```
+The plugin handles callbacks from Paylis to update the order status. The callback URL is `https://your-domain.com/wc-api/paylis_callback`. The callback request should be a POST request with a JSON payload containing the order ID and the payment status.
 
-## Customization
+### Customization
 
-You can customize the plugin by:
+You can customize the plugin by editing the following files:
 
-1. **Changing the API endpoint**: Edit the `$api_url` variable in the `call_paylis_api()` method
-2. **Adding custom fields**: Modify the `init_form_fields()` method
-3. **Custom styling**: Edit `paylis-styles.css`
-4. **Additional validation**: Add custom validation in the `process_payment()` method
-
-## Support
-
-This is an MVP version. For production use, consider adding:
-
-- Enhanced error handling and logging
-- Webhook signature verification
-- Refund support
-- Multi-currency support
-- Advanced configuration options
+- `class-paylis-gateway.php`: The main gateway class. You can modify the payment processing logic here.
+- `paylis-styles.css`: The CSS file for styling the payment method on the checkout page.
+- `config.php`: The configuration file where you can change the API endpoint.
 
 ## Requirements
 
-- WordPress 5.0+
-- WooCommerce 5.0+
-- PHP 7.4+
+- WordPress 5.0 or higher
+- WooCommerce 3.0 or higher
+- PHP 7.2 or higher
 
-## Author
+## Support
 
-Created by Fahmi for Paylis payment gateway integration.
+If you need help with the plugin, please open an issue on the [GitHub repository](https://github.com/fahmixls/paylis-woocomerce-payment-gateway/issues).
+
+## License
+
+This plugin is licensed under the GPL v3 or later. See the [LICENSE](https://www.gnu.org/licenses/gpl-3.0.html) file for more details.
+

@@ -1,4 +1,4 @@
 <?php
 return [
-    'PAYLIS_API_BASE_URL' => 'http://localhost:5173',
+    'PAYLIS_API_BASE_URL' => 'https://paylis.netlify.app',
 ];
