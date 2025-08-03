@@ -1,0 +1,32 @@
+.wc-block-checkout__payment-method--paylis {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin: 10px 0;
+}
+
+.wc-block-checkout__payment-method--paylis
+  .wc-block-components-radio-control__label {
+  font-weight: 600;
+  color: #333;
+}
+
+.wc-block-checkout__payment-method--paylis
+  .wc-block-components-radio-control__description {
+  color: #666;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Admin settings styling */
+.paylis-settings-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.paylis-settings-section h3 {
+  margin-top: 0;
+  color: #333;
+}
